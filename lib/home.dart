@@ -2,9 +2,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import 'model/PostModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:untitled2/model/Post_Model.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -15,27 +14,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<PostModel> postList = [] ;
 
-  List<PostModel> postlist=[];
-
-  //use future function
   Future<List<PostModel>> getPostApi() async{
-
-    final response=await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+    final response= await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+    //Now decode this into data
     var data=jsonDecode(response.body.toString());
+
+    print("here is DATA ${data}");
+
     if(response.statusCode==200){
-      postlist.clear();
+      postList.clear();
       for(Map i in data){
-        postlist.add(PostModel.fromJson(i));
-
+        postList.add(PostModel.fromJson(i));
       }
-      return postlist;
-
+     return  postList;
     }else{
-      return postlist;
+      return  postList;
 
     }
-
 
 }
 
@@ -43,35 +40,50 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Rest APIs Integration",style: TextStyle(),),
+        title: Text("Get APIs",style: TextStyle(),),
         centerTitle: true,
       ),
       body: Column(
         children: [
-          Expanded(
-            child: FutureBuilder(
-                future: getPostApi(),
-                builder:(context, snapshot){
-                  if(!snapshot.hasData){
-                    return Text("Loading...");
+         Expanded(
+           child: FutureBuilder(
+               future:getPostApi(),
+               builder: (context, snapshot){
+                 if(!snapshot.hasData){
+                   return CircularProgressIndicator();
+                 }else{
+                   return Container(
+                     color: Colors.grey,
+                     child: ListView.builder(
+                         itemCount: postList.length,
+                         itemBuilder: (context,index){
+                       return  Padding(
+                         padding: const EdgeInsets.all(8.0),
+                         child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                                  Text('Title',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                                  Text(postList[index].title.toString()),
+                               SizedBox(height: 10,),
+                               Text('Description',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                               Text("Description \n"+postList[index].body.toString())
 
-                  }else{
-                    return ListView.builder(itemBuilder: (context,index){
-                      return Column(children: [
-                        Text("Title"),
-                        Text(postlist[index].title.toString()),
-                        SizedBox(height: 10,),
-                        Text("Description"),
-                        Text(postlist[index].description.toString()),
-    
-                      ],
 
-                      );
-                    });
-                  }
-                }),
-          )
-        ],
+                             ],
+                           ),
+                                ),
+                         ),
+                       );
+                     }),
+                   );
+                 }
+                 }
+               ),
+         )
+      ],
       ),
     );
   }
