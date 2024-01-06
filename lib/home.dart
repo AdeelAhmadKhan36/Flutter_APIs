@@ -21,8 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //Now decode this into data
     var data=jsonDecode(response.body.toString());
 
-    print("here is DATA ${data}");
-
     if(response.statusCode==200){
       postList.clear();
       for(Map i in data){

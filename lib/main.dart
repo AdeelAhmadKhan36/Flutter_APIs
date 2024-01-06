@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled2/get_api_example_02.dart';
 
 import 'home.dart';
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomeScreen(),
+      home: Photoes_Api(),
     );
   }
 }
