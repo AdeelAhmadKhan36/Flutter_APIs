@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled2/complexJsonApi.dart';
-import 'package:untitled2/get_api_example_02.dart';
-import 'package:untitled2/shorcutApi.dart';
-
-import 'home.dart';
-
+import 'package:untitled2/verycomplexJson.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -15,7 +10,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ExampleThree(),
+      debugShowCheckedModeBanner: false,
+      home: ComplecObjecApi(),
     );
   }
 }
